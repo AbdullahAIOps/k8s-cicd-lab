@@ -93,11 +93,6 @@ jobs:
         method: kubeconfig
         kubeconfig: ${{ secrets.KUBECONFIG }}
 
-    - name: Configure kubectl
-      run: |
-        mkdir -p $HOME/.kube
-        echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
-
     - name: Update deployment image
       run: |
         sed -i 's|image: cicd-app:latest|image: ${{ needs.build-and-push.outputs.image-tag }}|g' k8s-manifests/deployment.yaml
